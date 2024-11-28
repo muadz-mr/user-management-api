@@ -8,7 +8,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiResponse
 {
-    public function success($data = [], $statusCode = 200): JsonResponse
+    /**
+     * @param array<string, mixed> $data
+     * @param int $statusCode
+     */
+    public function success(array $data = [], int $statusCode = 200): JsonResponse
     {
         $responseInfo = ['errCode' => 0, 'errMsg' => ''];
 
@@ -18,16 +22,22 @@ class ApiResponse
         );
     }
 
-    public function error(int $statusCode, int $errorCode, string $errorMesage, ?array $data = []): JsonResponse
+    /**
+     * @param int $statusCode
+     * @param int $errorCode
+     * @param string $errorMessage
+     * @param array<string, mixed>|null $data
+     */
+    public function error(int $statusCode, int $errorCode, string $errorMessage, ?array $data = []): JsonResponse
     {
         return response()->json([
             'errCode' => $errorCode,
-            'errMsg' => $errorMesage,
+            'errMsg' => $errorMessage,
             ...$data,
         ], $statusCode);
     }
 
-    public function collection($collection)
+    public function collection(mixed $collection): JsonResponse
     {
         if ($collection instanceof LengthAwarePaginator || $collection instanceof AnonymousResourceCollection) {
             return $this->success([

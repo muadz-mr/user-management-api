@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\User\UserListingResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends Controller
 {
+    public function index(Request $request): JsonResponse
+    {
+        $users = User::filter($request->all())->get();
+        return $this->apiResponse->success(UserListingResource::collection($users));
+    }
+
     public function store(StoreUserRequest $request): JsonResponse
     {
         $user = User::create($request->validated());

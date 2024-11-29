@@ -9,9 +9,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ApiResponse
 {
     /**
-     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>|mixed  $data
      */
-    public function success(array $data = [], int $statusCode = 200): JsonResponse
+    public function success(mixed $data = [], int $statusCode = 200): JsonResponse
     {
         $responseInfo = ['errCode' => '0', 'errMsg' => ''];
 

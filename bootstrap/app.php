@@ -3,6 +3,7 @@
 use App\Http\Middleware\ForceJson;
 use App\Supports\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -30,5 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(fn (NotFoundHttpException $ex) => $apiResponse->error(404, $ex->getCode(), app()->environment() == 'production' ? __('message.not_found') : $ex->getMessage()));
         $exceptions->render(fn (AccessDeniedHttpException $ex) => $apiResponse->error(403, $ex->getCode(), $ex->getMessage()));
         $exceptions->render(fn (ValidationException $ex) => $apiResponse->error(422, $ex->getCode(), $ex->getMessage(), ['errors' => $ex->errors()]));
-        $exceptions->render(fn (Exception $ex) => $apiResponse->error(500, $ex->getCode(), app()->environment() == 'production' ? __('message.something_wrong') : $ex->getMessage()));
+        $exceptions->render(fn (PDOException $ex) => $apiResponse->error(500, 1005, app()->environment() == 'production' ? __('message.something_wrong') : $ex->getMessage()));
+        $exceptions->render(fn (QueryException $ex) => $apiResponse->error(500, 1005, app()->environment() == 'production' ? __('message.something_wrong') : $ex->getMessage()));
+        $exceptions->render(fn (Exception $ex) => $apiResponse->error(500, 2001, app()->environment() == 'production' ? __('message.something_wrong') : $ex->getMessage()));
     })->create();

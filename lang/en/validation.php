@@ -173,8 +173,9 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'phone' => [
+            'invalid_format' => 'The :attribute must have a valid phone number format: (01X-XXXXXXX).',
+            'unique' => 'The :attribute has already been used.',
         ],
     ],
 

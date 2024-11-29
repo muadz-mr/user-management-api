@@ -9,12 +9,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ApiResponse
 {
     /**
-     * @param array<string, mixed> $data
-     * @param int $statusCode
+     * @param  array<string, mixed>  $data
      */
     public function success(array $data = [], int $statusCode = 200): JsonResponse
     {
-        $responseInfo = ['errCode' => 0, 'errMsg' => ''];
+        $responseInfo = ['errCode' => '0', 'errMsg' => ''];
 
         return response()->json(
             count($data) > 0 ? array_merge($responseInfo, ['data' => $data]) : $responseInfo,
@@ -23,12 +22,10 @@ class ApiResponse
     }
 
     /**
-     * @param int $statusCode
-     * @param int $errorCode
-     * @param string $errorMessage
-     * @param array<string, mixed>|null $data
+     * @param  int|string  $errorCode
+     * @param  array<string, mixed>|null  $data
      */
-    public function error(int $statusCode, int $errorCode, string $errorMessage, ?array $data = []): JsonResponse
+    public function error(int $statusCode, mixed $errorCode, string $errorMessage, ?array $data = []): JsonResponse
     {
         return response()->json([
             'errCode' => $errorCode,

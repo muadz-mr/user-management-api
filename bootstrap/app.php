@@ -28,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(fn (BadRequestHttpException $ex) => $apiResponse->error(400, $ex->getCode(), $ex->getMessage()));
         $exceptions->render(fn (AuthenticationException $ex) => $apiResponse->error(401, $ex->getCode(), $ex->getMessage()));
-        $exceptions->render(fn (NotFoundHttpException $ex) => $apiResponse->error(404, $ex->getCode(), app()->environment() == 'production' ? __('message.not_found') : $ex->getMessage()));
+        $exceptions->render(fn (NotFoundHttpException $ex) => $apiResponse->error(404, $ex->getCode(), $ex->getMessage()));
         $exceptions->render(fn (AccessDeniedHttpException $ex) => $apiResponse->error(403, $ex->getCode(), $ex->getMessage()));
         $exceptions->render(fn (ValidationException $ex) => $apiResponse->error(422, $ex->getCode(), $ex->getMessage(), ['errors' => $ex->errors()]));
         $exceptions->render(fn (PDOException $ex) => $apiResponse->error(500, 1005, app()->environment() == 'production' ? __('message.something_wrong') : $ex->getMessage()));

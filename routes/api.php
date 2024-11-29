@@ -5,4 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'user'], function () {
     Route::post('add', [UserController::class, 'store']);
+    Route::post('edit', [UserController::class, 'update']);
 });

@@ -21,7 +21,7 @@ class PhoneNumberUnique implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $phoneNumber = Helper::replaceDashFromPhoneNumber($value);
-        $user = User::query()->where('phone', $phoneNumber)->when($this->userId, fn ($query) => $query->whereNot('id', $this->userId))->first();
+        $user = User::where('phone', $phoneNumber)->when($this->userId, fn ($query) => $query->whereNot('id', $this->userId))->first();
 
         if ($user) {
             $fail(__($this->errorMessageKey));

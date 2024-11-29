@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
@@ -13,9 +14,7 @@ class UserController extends Controller
 {
     public function store(StoreUserRequest $request): JsonResponse
     {
-        $validated = $request->validated();
-
-        $user = User::query()->create($validated);
+        $user = User::create($request->validated());
 
         if ($user == null) {
             $this->throwException(1001);
@@ -27,11 +26,24 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $user = User::query()->find($validated['id']);
+        $user = User::find($validated['id']);
         $user->update($validated);
 
-        if ($user) {
+        if (! $user) {
             $this->throwException(1002);
+        }
+
+        return $this->apiResponse->success();
+    }
+
+    public function destroy(DeleteUserRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $user = User::find($validated['id']);
+        $user->delete();
+
+        if (! $user) {
+            $this->throwException(1003);
         }
 
         return $this->apiResponse->success();

@@ -17,6 +17,7 @@ class UserController extends Controller
     public function index(Request $request): JsonResponse
     {
         $users = User::filter($request->all())->get();
+
         return $this->apiResponse->success(UserListingResource::collection($users));
     }
 
